@@ -1,13 +1,6 @@
 // Element references
 var generateBtn = document.querySelector("#generate");
-var formEl = document.querySelector("#preferences");
-var submitBtn = document.querySelector("#submit");
 var passwordText = document.querySelector("#password");
-var lengthEl = document.querySelector("#length");
-var lowercaseEl = document.querySelector("#lowercase");
-var uppercaseEl = document.querySelector("#uppercase");
-var numbersEl = document.querySelector("#numbers");
-var specialEl = document.querySelector("#special");
 var copyBtn = document.querySelector("#copy");
 
 // Character generator functions
@@ -33,24 +26,35 @@ function getRandomSymbol() {
   return symbols[Math.floor(Math.random() * symbols.length)];
 }
 
+function getPreferences() {
+  // Prompt for length
+  var length = parseInt(prompt("How many characters would you like your password to be? (8-128)"));
+  if (isNaN(length) || length < 8 || length > 128) {
+    alert("Please enter a valid length between 8 and 128 characters.");
+    return null;
+  }
+
+  // Confirm character types
+  var hasLower   = confirm("Press OK to include lowercase letters, or Cancel to skip.");
+  var hasUpper   = confirm("Press OK to include uppercase letters, or Cancel to skip.");
+  var hasNumber  = confirm("Press OK to include numbers, or Cancel to skip.");
+  var hasSpecial = confirm("Press OK to include special characters, or Cancel to skip.");
+
+  // Require at least one type
+  if (!hasLower && !hasUpper && !hasNumber && !hasSpecial) {
+    alert("You must select at least one character type.");
+    return null;
+  }
+
+  return { length, hasLower, hasUpper, hasNumber, hasSpecial };
+}
+
 function generatePassword(lower, upper, number, symbol, length) {
   var generatedPassword = '';
   var typesCount = lower + upper + number + symbol;
   const typesArr = [{lower}, {upper}, {number}, {symbol}].filter(
     item => Object.values(item)[0]
   );
-
-  // Validate: at least one type selected
-  if (typesCount === 0) {
-    return "Please select at least one character type.";
-  }
-  // Validate: length range
-  if (length < 8) {
-    return "Password must be at least 8 characters.";
-  }
-  if (length > 128) {
-    return "Password must be no more than 128 characters.";
-  }
 
   for (let i = 0; i < length; i += typesCount) {
     typesArr.forEach(type => {
@@ -60,10 +64,6 @@ function generatePassword(lower, upper, number, symbol, length) {
   }
 
   return generatedPassword.slice(0, length);
-}
-
-function showForm() {
-  formEl.style.display = "block";
 }
 
 // Copy to clipboard
@@ -79,36 +79,14 @@ copyBtn.addEventListener("click", () => {
   });
 });
 
-// Show preferences panel
-generateBtn.addEventListener("click", showForm);
+// Generate password on button click
+generateBtn.addEventListener("click", () => {
+  var preferences = getPreferences();
+  if (!preferences) return;
 
-// Generate password on submit
-submitBtn.addEventListener("click", (event) => {
-  event.preventDefault();
-
-  var length = +lengthEl.value;
-  var hasLower = lowercaseEl.checked;
-  var hasUpper = uppercaseEl.checked;
-  var hasNumber = numbersEl.checked;
-  var hasSpecial = specialEl.checked;
-
+  var { length, hasLower, hasUpper, hasNumber, hasSpecial } = preferences;
   var result = generatePassword(hasLower, hasUpper, hasNumber, hasSpecial, length);
 
-  // If result is an error message, show it and don't update the password field
-  var isError = (
-    result === "Please select at least one character type." ||
-    result === "Password must be at least 8 characters." ||
-    result === "Password must be no more than 128 characters."
-  );
-
-  if (isError) {
-    alert(result);
-    return;
-  }
-
   passwordText.value = result;
-
-  // Enable copy button and hide form
   copyBtn.disabled = false;
-  formEl.style.display = "none";
 });

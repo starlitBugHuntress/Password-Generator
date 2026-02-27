@@ -30,31 +30,6 @@
         <div class="card-footer">
           <button id="generate" class="btn">Generate Password</button>
         </div>
-        <div id="preferences">
-          <form>
-            <label for="length">How many characters? (8–128)</label>
-            <input
-              type="number"
-              id="length"
-              name="length"
-              min="8"
-              max="128"
-              placeholder="e.g. 16"
-            />
-
-            <fieldset>
-              <legend>Include character types:</legend>
-              <div class="checkbox-group">
-                <label><input type="checkbox" id="lowercase" name="lowercase" /> Lowercase</label>
-                <label><input type="checkbox" id="uppercase" name="uppercase" /> Uppercase</label>
-                <label><input type="checkbox" id="numbers" name="numbers" /> Numbers</label>
-                <label><input type="checkbox" id="special" name="special" /> Special Characters</label>
-              </div>
-            </fieldset>
-
-            <button id="submit" class="btn" type="submit">Generate</button>
-          </form>
-        </div>
       </div>
     </div>
     <script src="script.js"></script>
