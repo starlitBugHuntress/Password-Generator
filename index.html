@@ -23,26 +23,36 @@
             placeholder="Your Secure Password"
             aria-label="Generated Password"
           ></textarea>
+          <button id="copy" class="btn-copy" aria-label="Copy password to clipboard" disabled>
+            Copy to Clipboard
+          </button>
         </div>
         <div class="card-footer">
           <button id="generate" class="btn">Generate Password</button>
         </div>
         <div id="preferences">
           <form>
-            <label for="length">How many characters do you want in your password? (Password must be between 8-128 characters)</label>
-            <input type="number" id="length" name="length">
-            <br>
-            <p>Which of the following character types would you like your password to include?</p>
-            <label for="lowercase">Lowercase</label>
-            <input type="checkbox" id="lowercase" name="lowercase">
-            <label for="uppercase">Uppercase</label>
-            <input type="checkbox" id="uppercase" name="uppercase">
-            <label for="numbers">Numbers</label>
-            <input type="checkbox" id="numbers" name="numbers">
-            <label for="special">Special Characters</label>
-            <input type="checkbox" id="special" name="special">
-            <br><br>
-            <button id="submit" class="form" type="submit">Submit</button>
+            <label for="length">How many characters? (8–128)</label>
+            <input
+              type="number"
+              id="length"
+              name="length"
+              min="8"
+              max="128"
+              placeholder="e.g. 16"
+            />
+
+            <fieldset>
+              <legend>Include character types:</legend>
+              <div class="checkbox-group">
+                <label><input type="checkbox" id="lowercase" name="lowercase" /> Lowercase</label>
+                <label><input type="checkbox" id="uppercase" name="uppercase" /> Uppercase</label>
+                <label><input type="checkbox" id="numbers" name="numbers" /> Numbers</label>
+                <label><input type="checkbox" id="special" name="special" /> Special Characters</label>
+              </div>
+            </fieldset>
+
+            <button id="submit" class="btn" type="submit">Generate</button>
           </form>
         </div>
       </div>
